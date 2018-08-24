@@ -88,11 +88,13 @@
                                 url: "<?php echo U('Home/Index/upload');?>",
                                 type: 'post',
                                 fileElementId: id,
-                                dataType: 'json',
+                                dataType: 'text',
                                 secureuri: false, //一般设置为false
                                 success: function (data, status) {
+                                    console.log(data)
                                     $(".loading").show();
-                                    var str = '<div class="list-img"  style="float: left;margin-right: 10px;margin-bottom: 10px" id="uploadImg"><img src="/~mac/flower/attachs/' + data.url + '"><input type="hidden" name="photos[]" value="' + data.originalName+'@'+data.name + '" /></div>';
+                                    // var str = '<div class="list-img"  style="float: left;margin-right: 10px;margin-bottom: 10px" id="uploadImg"><img src="/~mac/flower/attachs/' + data.url + '"><input type="hidden" name="photos[]" value="' + data.originalName+'@'+data.name + '" /></div>';
+                                    var str = '<div class="list-img"  style="float: left;margin-right: 10px;margin-bottom: 10px" id="uploadImg"><img src="/~mac/flower/attachs/' + data + '"><input type="hidden" name="photos[]" value="' + data+ '" /></div>';
                                     $(".loading").before(str);
                                     $(".loading").hide();
                                     $("#"+id).unbind('change');

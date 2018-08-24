@@ -19,10 +19,12 @@ class IndexController extends Controller {
             $original_photo = array();
             $thumb_photo = array();
             foreach ($check_result['photos'] as $k=>$v){
-                $photos = explode('@',$v);
-                $original_photo[] = 'attachs/'.$photos[0];
-                $thumb_photo[] = 'attachs/'.$photos[1];
+//                $photos = explode('@',$v);
+//                $original_photo[] = 'attachs/'.$photos[0];
+//                $thumb_photo[] = 'attachs/'.$photos[1];
+                $original_photo = $v;
             }
+            p($original_photo);die;
             unset($check_result['photos']);
             $time = date('Y-m-d H:i:s',time());
             $ideal_total_price = $check_result['goods_number'] * ($check_result['ideal_price']*100);
@@ -109,7 +111,7 @@ class IndexController extends Controller {
                     'size' => $info[0]['size'],
                     'type' => $info[0]['extension'],
                 );
-                echo json_encode($return);
+                echo $return['name'];
             }
 //            echo 'http://'.$this->_server('HTTP_HOST').__ROOT__.'/upload/qq571031767/130_'.$info[0]['savename'];
         }else{

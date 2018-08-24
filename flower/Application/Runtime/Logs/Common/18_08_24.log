@@ -52,3 +52,15 @@ INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
 INFO: [ app_init ] --END-- [ RunTime:0.000103s ]
 ERR: 无法加载模块:~mac
 
+[ 2018-08-24T21:34:16+08:00 ] 127.0.0.1 /~mac/flower/attachs/%3Cpre%20style=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000006s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000033s ]
+ERR: 无法加载模块:~mac
+
+[ 2018-08-24T21:34:46+08:00 ] 127.0.0.1 /~mac/flower/attachs/%3Cpre%20style=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000069s ]
+ERR: 无法加载模块:~mac
+
