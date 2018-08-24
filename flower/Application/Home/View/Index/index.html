@@ -91,10 +91,9 @@
                                 dataType: 'text',
                                 secureuri: false, //一般设置为false
                                 success: function (data, status) {
-                                    console.log(data)
                                     $(".loading").show();
                                     // var str = '<div class="list-img"  style="float: left;margin-right: 10px;margin-bottom: 10px" id="uploadImg"><img src="__ROOT__/attachs/' + data.url + '"><input type="hidden" name="photos[]" value="' + data.originalName+'@'+data.name + '" /></div>';
-                                    var str = '<div class="list-img"  style="float: left;margin-right: 10px;margin-bottom: 10px" id="uploadImg"><img src="__ROOT__/attachs/' + data + '"><input type="hidden" name="photos[]" value="' + data+ '" /></div>';
+                                    var str = '<div class="list-img"  style="float: left;margin: 10px" id="uploadImg"><img src="__ROOT__/attachs/' + data + '"><input type="hidden" name="photos[]" value="' + data+ '" /></div>';
                                     $(".loading").before(str);
                                     $(".loading").hide();
                                     $("#"+id).unbind('change');
@@ -140,7 +139,10 @@
                         <label for="exampleInputPassword1">实际售价</label>
                         <input type="text" class="form-control" name="reality_price" pattern="[0-9]*">
                     </div>
-
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">备注说明</label>
+                        <input type="text" class="form-control" name="remark" >
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -161,14 +163,15 @@
         $("#submit").click(function () {    // 提交按钮触发事件
             var tourl = $("form").attr("action");    // 获取 表单的 提交地址
             // 序列化 表单数据 后提交 ，太简洁了
+            $('#myModal').modal('hide')
             $.post(tourl, $("form").serialize(), function (data) {
                 if (data.code == 200){
-                    $('#myModal').modal('hide')
                     layer.open({
                         content: data.message
                         ,skin: 'msg'
                         ,time: 2 //2秒后自动关闭
                     });
+                    $('#uploadImg').remove()
                     $('#reset')[0].reset();
                 }else{
                     layer.open({

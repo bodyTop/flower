@@ -64,3 +64,9 @@ INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
 INFO: [ app_init ] --END-- [ RunTime:0.000069s ]
 ERR: 无法加载模块:~mac
 
+[ 2018-08-24T21:57:27+08:00 ] 127.0.0.1 /~mac/flower/Home/Index/upload.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000055s ]
+ERR: 无法加载模块:~mac
+

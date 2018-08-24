@@ -3,12 +3,11 @@ namespace Home\Controller;
 use Think\Controller;
 class IndexController extends Controller {
 
-    private $size = '130';
+    private $size = '80';
 
     public function index(){
 
         if (IS_POST){
-//            echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
             header('Content-Type: text/html; charset=utf-8');
             $data = I('post.');
             $check_result = $this->check_verify($data);
@@ -19,12 +18,11 @@ class IndexController extends Controller {
             $original_photo = array();
             $thumb_photo = array();
             foreach ($check_result['photos'] as $k=>$v){
-//                $photos = explode('@',$v);
+                $photos = explode('_',$v);
 //                $original_photo[] = 'attachs/'.$photos[0];
-//                $thumb_photo[] = 'attachs/'.$photos[1];
-                $original_photo = $v;
+                $original_photo[] = 'attachs/'.$photos[1];
+                $thumb_photo = 'attachs/'.$v;
             }
-            p($original_photo);die;
             unset($check_result['photos']);
             $time = date('Y-m-d H:i:s',time());
             $ideal_total_price = $check_result['goods_number'] * ($check_result['ideal_price']*100);
@@ -82,7 +80,7 @@ class IndexController extends Controller {
 
     public function upload(){
         if (!empty($_FILES)) {
-            import("ORG.NET.UploadFile");
+            import("Org.Net.UploadFile");
             $upload = new \UploadFile();
             $upload->maxSize = 2048000;
             $upload->allowExts = array('jpg','jpeg','gif','png');
@@ -93,11 +91,11 @@ class IndexController extends Controller {
             }
             $upload->savePath = $dir;
             $upload->thumb = true; //设置缩略图
-            $upload->imageClassPath = "ORG.Util.Image";
+            $upload->imageClassPath = "Org.Util.Image";
             $upload->thumbPrefix = $this->size."_"; //生成多张缩略图
             $upload->thumbMaxWidth = $this->size;
             $upload->thumbMaxHeight = $this->size;
-            $upload->saveRule = uniqid; //上传规则
+            $upload->saveRule = 'uniqid'; //上传规则
             $upload->thumbRemoveOrigin = false; //删除原图
             if(!$upload->upload()){
                 $this->error($upload->getErrorMsg());//获取失败信息
