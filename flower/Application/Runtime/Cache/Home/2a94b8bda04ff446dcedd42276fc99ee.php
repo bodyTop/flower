@@ -1,7 +1,8 @@
 <?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv='Content-Type' content='Type=text/html; charset=utf-8'>
+    <meta charset="UTF-8">
+    <meta http-equiv='Content-Type' content='Type=text/html; '>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>财务录入系统</title>
@@ -13,7 +14,7 @@
 </head>
 <style>
     #entering {
-        width: 30%;
+        width: 15rem;
         height: 58px;
         position: absolute;
         margin: auto;
@@ -21,9 +22,6 @@
         bottom: 0;
         left: 0;
         right: 0;
-    }
-    input[type=file]{
-
     }
     .file_dom {
         position: relative;
@@ -66,21 +64,21 @@
                 <h4 class="modal-title" id="myModalLabel">录入销售信息</h4>
             </div>
             <div class="modal-body">
-                <form id="form1" action="<?php echo U('Index/index');?>" method="post">
+                <form id="reset" action="<?php echo U('Index/index');?>" method="post">
                     <div class="form-group">
                         <label for="exampleInputEmail1">花卉名称</label>
                         <input type="text" class="form-control" name="goods_name" placeholder="输入销售的花卉名称" maxlength="40">
                     </div>
                     <!--<div class="form-group">-->
-                        <!--<label for="exampleInputEmail1">花卉名称</label>-->
-                        <!--<input type="text" class="form-control" name="goods_name" placeholder="输入销售的花卉名称">-->
+                    <!--<label for="exampleInputEmail1">花卉名称</label>-->
+                    <!--<input type="text" class="form-control" name="goods_name" placeholder="输入销售的花卉名称">-->
                     <!--</div>-->
                     <div class="form-group">
                         <!--<label for="exampleInputEmail1">图片上传</label>-->
                         <div class="file_dom "><input type="file"  id="fileToUpload" name="fileToUpload" >图片上传</div>
                         <div class="file_dom "><input type="file" accept="image/*" id="imgToUpload" name="imgToUpload" capture="camera">图片拍摄</div>
-                        <div class="btn-block loading" style="float: left">
-
+                        <div class="Upload-img" style="overflow: hidden">
+                            <div class="btn-block loading" style="display:none;"><img src=""></div>
                         </div>
                     </div>
                     <script type="text/javascript" src="/~mac/flower/Public/js/ajaxfileupload.js"></script>
@@ -95,7 +93,8 @@
                                 success: function (data, status) {
                                     $(".loading").show();
                                     var str = '<div class="list-img"  style="float: left;margin-right: 10px;margin-bottom: 10px" id="uploadImg"><img src="/~mac/flower/attachs/' + data.url + '"><input type="hidden" name="photos[]" value="' + data.originalName+'@'+data.name + '" /></div>';
-                                    $(".loading").append(str);
+                                    $(".loading").before(str);
+                                    $(".loading").hide();
                                     $("#"+id).unbind('change');
                                     $("#"+id).change(function () {
                                         ajaxupload(id);
@@ -168,7 +167,7 @@
                         ,skin: 'msg'
                         ,time: 2 //2秒后自动关闭
                     });
-                    $("form").reset();
+                    document.getElementById("runat").reset();
                 }else{
                     layer.open({
                         content: data.message

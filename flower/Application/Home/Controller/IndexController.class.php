@@ -8,7 +8,9 @@ class IndexController extends Controller {
     public function index(){
 
         if (IS_POST){
-            $data = $_POST;
+            echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
+            $data = I('post.');
+            p($_POST);
             $check_result = $this->check_verify($data);
             if ($check_result['code'] == 201){
                 echo json_encode($check_result);
@@ -18,8 +20,8 @@ class IndexController extends Controller {
             $thumb_photo = array();
             foreach ($check_result['photos'] as $k=>$v){
                 $photos = explode('@',$v);
-                $original_photo[] = $photos[0];
-                $thumb_photo[] = $photos[1];
+                $original_photo[] = 'attachs/'.$photos[0];
+                $thumb_photo[] = 'attachs/'.$photos[1];
             }
             unset($check_result['photos']);
             $time = date('Y-m-d H:i:s',time());
@@ -30,6 +32,7 @@ class IndexController extends Controller {
             $check_result['time'] = $time;
             $check_result['ideal_total_price'] = $ideal_total_price;
             $check_result['reality_total_price'] = $reality_total_price;
+            p($check_result);die;
             if (M('order')->add($check_result)){
                 echo json_encode(array('code'=>200,'message'=>'提交成功'));
                 exit;

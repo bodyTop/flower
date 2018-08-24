@@ -2,7 +2,7 @@
 return array(
 	//'配置项'=>'配置值'
     'DB_TYPE'   =>  'mysql',
-    'DB_HOST'   =>  '45.62.101.37',
+    'DB_HOST'   =>  '127.0.0.1',
     'DB_NAME'   =>  'flower',////数据库名
     'DB_USER'   =>  'root',//数据账户
     'DB_PWD'    =>  'root',//数据密码
