@@ -8,9 +8,9 @@ class IndexController extends Controller {
     public function index(){
 
         if (IS_POST){
-            echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
+//            echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
+            header('Content-Type: text/html; charset=utf-8');
             $data = I('post.');
-            p($_POST);
             $check_result = $this->check_verify($data);
             if ($check_result['code'] == 201){
                 echo json_encode($check_result);
@@ -32,7 +32,6 @@ class IndexController extends Controller {
             $check_result['time'] = $time;
             $check_result['ideal_total_price'] = $ideal_total_price;
             $check_result['reality_total_price'] = $reality_total_price;
-            p($check_result);die;
             if (M('order')->add($check_result)){
                 echo json_encode(array('code'=>200,'message'=>'提交成功'));
                 exit;

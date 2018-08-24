@@ -167,7 +167,7 @@
                         ,skin: 'msg'
                         ,time: 2 //2秒后自动关闭
                     });
-                    document.getElementById("runat").reset();
+                    $('#reset')[0].reset();
                 }else{
                     layer.open({
                         content: data.message
