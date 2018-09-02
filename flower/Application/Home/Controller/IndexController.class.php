@@ -1,44 +1,66 @@
 <?php
+
 namespace Home\Controller;
 use Think\Controller;
 class IndexController extends Controller {
 
     private $size = '80';
+    private $fields = array('goods_name'=>'请填写花卉名称','goods_standards'=>'请填写花卉规格','goods_number'=>'请填写销售数量','reality_price'=>'请填实际售价');
 
     public function index(){
 
         if (IS_POST){
-            header('Content-Type: text/html; charset=utf-8');
             $data = I('post.');
             $check_result = $this->check_verify($data);
             if ($check_result['code'] == 201){
                 echo json_encode($check_result);
                 exit;
             }
-            $original_photo = array();
-            $thumb_photo = array();
-            foreach ($check_result['photos'] as $k=>$v){
-                $photos = explode('_',$v);
-//                $original_photo[] = 'attachs/'.$photos[0];
-                $original_photo[] = 'attachs/'.$photos[1];
-                $thumb_photo = 'attachs/'.$v;
-            }
-            unset($check_result['photos']);
+//            $original_photo = array();
+//            $thumb_photo = array();
+//            foreach ($check_result['photos'] as $k=>$v){
+//                $photos = explode('_',$v);
+//                $original_photo[] = 'attachs/'.$photos[1];
+//                $thumb_photo = 'attachs/'.$v;
+//            }
+//            unset($check_result['photos']);
+//            $check_result['original_photo'] = serialize($original_photo);
+//            $check_result['thumb_photo'] = serialize($thumb_photo);
             $time = date('Y-m-d H:i:s',time());
-            $ideal_total_price = $check_result['goods_number'] * ($check_result['ideal_price']*100);
-            $reality_total_price = $check_result['goods_number'] * ($check_result['reality_price']*100);
-            $check_result['original_photo'] = serialize($original_photo);
-            $check_result['thumb_photo'] = serialize($thumb_photo);
-            $check_result['time'] = $time;
-            $check_result['ideal_total_price'] = $ideal_total_price;
-            $check_result['reality_total_price'] = $reality_total_price;
-            if (M('order')->add($check_result)){
-                echo json_encode(array('code'=>200,'message'=>'提交成功'));
-                exit;
-            }else{
-                echo json_encode(array('code'=>203,'message'=>'网络不稳定，刷新后再试'));
-                exit;
+            $ideal_total_price = 0;
+            $reality_total_price = 0;
+            foreach ($check_result['goods_number'] as $k=>$v){
+                $check_result['ideal_price'][$k] = $check_result['ideal_price'][$k]*100;
+                $check_result['reality_price'][$k] = $check_result['reality_price'][$k]*100;
+                $ideal_total_price += (int)$v * ((int)$check_result['ideal_price'][$k]);
+                $reality_total_price += (int)$v * ((int)$check_result['reality_price'][$k]);
             }
+
+            $order = array();
+            $order['time'] = $time;
+            $order['ideal_total_price'] = $ideal_total_price;
+            $order['reality_total_price'] = $reality_total_price;
+            $order['remark'] = $check_result['remark'];
+            unset($check_result['remark']);
+
+            $order_info = array();
+            foreach ($check_result as $filed=>$value){
+                foreach ($value as $k=>$v){
+                    $order_info[$k][$filed] = $v;
+                }
+            }
+
+            if ($order_id = M('order')->add($order)){
+                foreach ($order_info as $key=>$array){
+                    $order_info[$key]['order_id'] = $order_id;
+                }
+                if (M('order_info')->addAll($order_info)){
+                    echo json_encode(array('code'=>200,'message'=>'提交成功'));
+                    exit;
+                }
+            }
+            echo json_encode(array('code'=>203,'message'=>'网络不稳定，刷新后再试'));
+            exit;
         }else{
             $this->display();
         }
@@ -46,33 +68,21 @@ class IndexController extends Controller {
 
 
     public function check_verify($data){
-        if (!$data['goods_name']){
-            $message = '请填写花卉名称';
-            return array('code'=>201,'message'=>$message);
-        }
-        if (!$data['goods_standards']){
-            $message = '请填写花卉规格';
-            return array('code'=>201,'message'=>$message);
-        }
-        if (!$data['goods_number']){
-            $message = '请填写销售数量';
-            return array('code'=>201,'message'=>$message);
-        }
-        if (!$data['reality_price']){
-            $message = '请填实际售价';
-            return array('code'=>201,'message'=>$message);
-        }
-        if ($data['goods_number']<=0 or !is_numeric($data['goods_number'])){
-            $message = '销售数量填写有误';
-            return array('code'=>201,'message'=>$message);
-        }
-        if ($data['reality_price']<=0 or !is_numeric($data['reality_price'])){
-            $message = '实际售价填写有误';
-            return array('code'=>201,'message'=>$message);
-        }
-        if ($data['ideal_price'] and ($data['reality_price']<=0 or !is_numeric($data['reality_price']))){
-            $message = '应售价填写有误';
-            return array('code'=>201,'message'=>$message);
+        $two_check = array('goods_number'=>'销售数量填写有误','reality_price'=>'实际售价填写有误','ideal_price'=>'应售价填写有误');
+        foreach ($data as $field=>$val_array){
+            foreach ($val_array as $k=>$v){
+                if (!$v){
+                    $message = $this->fields[$field];
+                    return array('code'=>201,'message'=>$message);
+                }
+                if (in_array($field,array_keys($two_check))){
+                    if ($v <=0 or !is_numeric($v)){
+                        $message = $two_check[$field];
+                        return array('code'=>201,'message'=>$message);
+                    }
+                }
+            }
+
         }
         return $data;
     }

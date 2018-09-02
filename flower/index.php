@@ -22,6 +22,9 @@ ini_set('date.timezone', 'Asia/Shanghai');
 // 定义应用目录
 define('APP_PATH','./Application/');
 
+header("Content-type:text/html;charset=utf-8");
+
+
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
 
