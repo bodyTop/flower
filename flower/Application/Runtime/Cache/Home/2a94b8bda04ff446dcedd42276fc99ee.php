@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>财务录入系统</title>
-    <link rel="stylesheet" type="text/css" href="/~mac/flower/Public/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/Public/css/bootstrap.css"/>
 
-    <script src="/~mac/flower/Public/js/jquery.min.js"></script>
-    <script src="/~mac/flower/Public/js/layer.js"></script>
-    <script src="/~mac/flower/Public/js/bootstrap.js"></script>
+    <script src="/Public/js/jquery.min.js"></script>
+    <script src="/Public/js/layer.js"></script>
+    <script src="/Public/js/bootstrap.js"></script>
 </head>
 <style>
     #entering {
@@ -109,7 +109,7 @@
                             <div class="btn-block loading" style="display:none;"><img src=""></div>
                         </div>
                     </div>
-                    <script type="text/javascript" src="/~mac/flower/Public/js/ajaxfileupload.js"></script>
+                    <script type="text/javascript" src="/Public/js/ajaxfileupload.js"></script>
                     <script>
                         function ajaxupload(id) {
                             $.ajaxFileUpload({
@@ -120,8 +120,8 @@
                                 secureuri: false, //一般设置为false
                                 success: function (data, status) {
                                     $(".loading").show();
-                                    // var str = '<div class="list-img"  style="float: left;margin-right: 10px;margin-bottom: 10px" id="uploadImg"><img src="/~mac/flower/attachs/' + data.url + '"><input type="hidden" name="photos[]" value="' + data.originalName+'@'+data.name + '" /></div>';
-                                    var str = '<div class="list-img"  style="float: left;margin: 10px" id="uploadImg"><img src="/~mac/flower/attachs/' + data + '"><input type="hidden" name="photos[]" value="' + data+ '" /></div>';
+                                    // var str = '<div class="list-img"  style="float: left;margin-right: 10px;margin-bottom: 10px" id="uploadImg"><img src="/attachs/' + data.url + '"><input type="hidden" name="photos[]" value="' + data.originalName+'@'+data.name + '" /></div>';
+                                    var str = '<div class="list-img"  style="float: left;margin: 10px" id="uploadImg"><img src="/attachs/' + data + '"><input type="hidden" name="photos[]" value="' + data+ '" /></div>';
                                     $(".loading").before(str);
                                     $(".loading").hide();
                                     $("#"+id).unbind('change');
@@ -186,6 +186,11 @@
             }
         });
     }
+    layer.prompt(function(value, index, elem){
+        alert(value); //得到value
+        layer.close(index);
+    });
+alert(1)
     $(function () {
         //模太框的弹出
         $('#myModal').on('shown.bs.modal', function () {
@@ -199,11 +204,16 @@
 
         //提交
         $("#submit").click(function () {    // 提交按钮触发事件
+            var index = layer.open({
+                type: 2
+                ,content: '正在提交...'
+            });
             var tourl = $("form").attr("action");    // 获取 表单的 提交地址
             // 序列化 表单数据 后提交 ，太简洁了
             $('#myModal').modal('hide')
             $.post(tourl, $("form").serialize(), function (data) {
                 if (data.code == 200){
+                    layer.close(index);
                     layer.open({
                         content: data.message
                         ,skin: 'msg'
@@ -213,6 +223,7 @@
                     $('#reset')[0].reset();
                     $('#reset .info_box').eq(0).nextAll('.info_box').remove();
                 }else{
+                    layer.close(index);
                     layer.open({
                         content: data.message
                         ,skin: 'msg'
