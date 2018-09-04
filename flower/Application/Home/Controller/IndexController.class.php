@@ -1,15 +1,15 @@
 <?php
-
 namespace Home\Controller;
 use Think\Controller;
 class IndexController extends Controller {
 
     private $size = '80';
-    private $fields = array('goods_name'=>'请填写花卉名称','goods_standards'=>'请填写花卉规格','goods_number'=>'请填写销售数量','reality_price'=>'请填实际售价');
+    private $fields = array('goods_name'=>'请填写花卉名称','goods_standards'=>'请填写花卉规格','goods_number'=>'请填写销售数量','ideal_price'=>'请填写应售价','reality_price'=>'请填实际售价');
 
     public function index(){
 
         if (IS_POST){
+
             $data = I('post.');
             $check_result = $this->check_verify($data);
             if ($check_result['code'] == 201){

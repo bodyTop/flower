@@ -2,6 +2,7 @@
 
 function p($var)
 {
+    echo '<meta http-equiv="Content-Type" Content="text/html;charset=utf8"/>';
     echo '<pre style="background: #ddd;border-radius: 5px;padding: 10px">';
     if(is_bool($var))
     {

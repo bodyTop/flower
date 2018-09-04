@@ -172,8 +172,8 @@
             ,btn: ['删除', '返回']
             ,yes: function(index){
                 var del_element = needle.parents('.info_box');
-                var element_num = del_element.siblings().length;
-                if (element_num == 1){
+                var element_num = del_element.siblings('.info_box').length;
+                if (element_num == 0){
                     layer.open({
                         content: '最少保留一条信息'
                         ,skin: 'msg'
@@ -211,6 +211,7 @@
                     });
                     // $('#uploadImg').remove()
                     $('#reset')[0].reset();
+                    $('#reset .info_box').eq(0).nextAll('.info_box').remove();
                 }else{
                     layer.open({
                         content: data.message
